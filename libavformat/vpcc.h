@@ -60,4 +60,8 @@ int ff_isom_get_vpcc_features(AVFormatContext *s, AVCodecParameters *par,
                               const uint8_t *data, int len,
                               AVRational *frame_rate, VPCC *vpcc);
 
+int ff_mkv_write_vpcc(AVFormatContext *s, AVIOContext *pb,
+                      const uint8_t *data, int len,
+                      AVCodecParameters *par);
+
 #endif /* AVFORMAT_VPCC_H */

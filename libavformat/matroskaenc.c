@@ -39,6 +39,7 @@
 #include "version.h"
 #include "vorbiscomment.h"
 #include "wv.h"
+#include "vpcc.h"
 
 #include "libavutil/avstring.h"
 #include "libavutil/channel_layout.h"
@@ -1154,6 +1155,8 @@ static int mkv_assemble_native_codecprivate(AVFormatContext *s, AVIOContext *dyn
         else
             *size_to_reserve = MAX_PCE_SIZE;
         break;
+    case AV_CODEC_ID_VP9:
+        return ff_mkv_write_vpcc(s, dyn_cp, extradata, extradata_size, par);
     case AV_CODEC_ID_ARIB_CAPTION: {
         unsigned stream_identifier, data_component_id;
         switch (par->profile) {

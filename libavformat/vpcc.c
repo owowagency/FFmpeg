@@ -221,3 +221,33 @@ int ff_isom_write_vpcc(AVFormatContext *s, AVIOContext *pb,
     avio_wb16(pb, 0);
     return 0;
 }
+
+int ff_mkv_write_vpcc(AVFormatContext *s, AVIOContext *pb,
+                      const uint8_t *data, int len,
+                      AVCodecParameters *par)
+{
+    VPCC vpcc;
+    int ret;
+
+    ret = ff_isom_get_vpcc_features(s, par, data, len, NULL, &vpcc);
+    if (ret < 0)
+        return ret;
+
+    avio_w8(pb, 1); // Profile ID
+    avio_w8(pb, 1); // Profile length
+    avio_w8(pb, vpcc.profile);
+
+    avio_w8(pb, 2); // Level ID
+    avio_w8(pb, 1); // level length
+    avio_w8(pb, vpcc.level);
+
+    avio_w8(pb, 3); // Bit depth ID
+    avio_w8(pb, 1); // Bit depth length
+    avio_w8(pb, vpcc.bitdepth);
+
+    avio_w8(pb, 4); // Chroma subsampling ID
+    avio_w8(pb, 1); // Chroma subsampling length
+    avio_w8(pb, vpcc.chroma_subsampling);
+
+    return 0;
+}
